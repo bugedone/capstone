@@ -28,12 +28,14 @@ jobs:
          key: app-build-{{ .Revision }}
   
   package-app:
-    executor: aws
+    executor: dotnet
     steps:
       - run:
-          name: Install required utilities
+          name: Install AWS CLI
           command: |
-            yum install -y tar gzip
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
       - checkout
       - restore_cache:
           keys: 
