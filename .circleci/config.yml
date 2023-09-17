@@ -42,7 +42,7 @@ jobs:
             ls -la App
 
             echo "Building container image"
-            docker build --tag=capstone
+            docker build --tag=capstone .
             docker image ls
 #      - run:
 #          name: Publish Docker image
