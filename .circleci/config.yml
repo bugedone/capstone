@@ -26,17 +26,18 @@ jobs:
          paths:
            - "App"
          key: app-build-{{ .Revision }}
+  
   package-app:
     executor: aws
     steps:
+      - run:
+          name: Install required utilities
+          command: |
+            yum install -y tar gzip
       - checkout
       - restore_cache:
           keys: 
             - app-build-{{ .Revision }}
-      - run:
-          name: Install requeried utilities
-          command: |
-            yum install -y tar gzip
       - run:
           name: Build Docker image
           command: |
