@@ -20,10 +20,10 @@ jobs:
             cd src/Capstone
             dotnet restore
             dotnet publish -c Release -o ../../App
-            cd ~
+            cd ~/project
             ls -la
       - persist_to_workspace:
-          root: ~/
+          root: ~/project
           paths:
             - "App/*"
   
