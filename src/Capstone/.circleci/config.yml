@@ -1,0 +1,43 @@
+version: 2.1
+
+executors:
+  dotnet:
+    docker:
+      - image: mcr.microsoft.com/dotnet/sdk:7.0
+
+jobs:
+  build-app:
+    executor: dotnet
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [app-build]
+      - run:
+          name: Build application
+          command: |
+            cd src/Capstone
+            dotnet restore
+            dotnet publish -c Release -o ../../out
+      - save_cache:
+         paths:
+           - "out"
+         key: app-build
+  package-app:
+    executor: dotnet
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [app-build]
+      - run:
+          name: Package application
+          command: |
+            pwd
+            ls -la
+
+workflows:
+  default:
+    jobs:
+      - build-app
+      - package-app:
+          requires: [build-app]
+
