@@ -41,9 +41,9 @@ jobs:
             echo "Application files:"
             ls -la App
 
-            #echo "Building container image"
-            #docker build --tag=capstone
-            #docker image ls
+            echo "Building container image"
+            docker build --tag=capstone
+            docker image ls
 #      - run:
 #          name: Publish Docker image
 #          command: |
