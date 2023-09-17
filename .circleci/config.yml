@@ -20,7 +20,7 @@ jobs:
             dotnet publish -c Release -o ../../App
       - save_cache:
          paths:
-           - "out"
+           - "App"
          key: app-build
   package-app:
     executor: dotnet
