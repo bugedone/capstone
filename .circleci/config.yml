@@ -37,7 +37,7 @@ jobs:
             ls -la
             cd App
             echo "Application files should be in here:"
-            la -la
+            ls -la
 
 workflows:
   default:
