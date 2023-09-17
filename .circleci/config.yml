@@ -10,8 +10,9 @@ jobs:
     executor: dotnet
     steps:
       - checkout
-#      - restore_cache:
-#          keys: [app-build]
+      - restore_cache:
+          keys: 
+            - app-build-{{ .Revision }}
       - run:
           name: Build application
           command: |
@@ -21,13 +22,14 @@ jobs:
       - save_cache:
          paths:
            - "App"
-         key: app-build
+         key: app-build-{{ .Revision }}
   package-app:
     executor: dotnet
     steps:
       - checkout
       - restore_cache:
-          keys: [app-build]
+          keys: 
+            - app-build-{{ .Revision }}
       - run:
           name: Package application
           command: |
