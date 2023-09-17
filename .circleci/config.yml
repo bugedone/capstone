@@ -34,7 +34,11 @@ jobs:
           keys: 
             - app-build-{{ .Revision }}
       - run:
-          name: Build and publish Docker image
+          name: Install requeried utilities
+          command: |
+            yum install -y tar gzip
+      - run:
+          name: Build Docker image
           command: |
             pwd
             echo "Application files:"
@@ -43,7 +47,9 @@ jobs:
             echo "Building container image"
             docker build --tag=capstone
             docker image ls
-
+      - run:
+          name: Publish Docker image
+          command: |
             echo "Publishing container image"
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 727020537064.dkr.ecr.us-east-1.amazonaws.com
             docker tag capstone:latest 727020537064.dkr.ecr.us-east-1.amazonaws.com/capstone:latest
