@@ -4,6 +4,9 @@ executors:
   dotnet:
     docker:
       - image: mcr.microsoft.com/dotnet/sdk:7.0
+  aws:
+    docker:
+      - image: amazon/aws-cli
 
 jobs:
   build-app:
@@ -24,20 +27,27 @@ jobs:
            - "App"
          key: app-build-{{ .Revision }}
   package-app:
-    executor: dotnet
+    executor: aws
     steps:
       - checkout
       - restore_cache:
           keys: 
             - app-build-{{ .Revision }}
       - run:
-          name: Package application
+          name: Build and publish Docker image
           command: |
             pwd
-            ls -la
-            cd App
-            echo "Application files should be in here:"
-            ls -la
+            echo "Application files:"
+            ls -la App
+
+            echo "Building container image"
+            docker build --tag=capstone
+            docker image ls
+
+            echo "Publishing container image"
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 727020537064.dkr.ecr.us-east-1.amazonaws.com
+            docker tag capstone:latest 727020537064.dkr.ecr.us-east-1.amazonaws.com/capstone:latest
+            docker push 727020537064.dkr.ecr.us-east-1.amazonaws.com/capstone:latest
 
 workflows:
   default:
