@@ -10,8 +10,8 @@ jobs:
     executor: dotnet
     steps:
       - checkout
-      - restore_cache:
-          keys: [app-build]
+#      - restore_cache:
+#          keys: [app-build]
       - run:
           name: Build application
           command: |
