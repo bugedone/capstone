@@ -19,7 +19,7 @@ jobs:
           command: |
             cd src/Capstone
             dotnet restore
-            dotnet publish -c Release -o ../../App
+            dotnet publish -c Release -o ../../App /p:BUILD_NUMBER=${CIRCLE_BUILD_NUM}
             cd ~/project
             ls -la
       - persist_to_workspace:
@@ -62,13 +62,16 @@ jobs:
       - run:
           name: Deploy infrastructure
           command: |
-            echo "Creating AWS infrastructure for the application if not already there
+            echo "Creating AWS infrastructure for the application if not already there"
             aws cloudformation deploy \
                   --template-file capstone-infra.yml \
                   --tags project=capstone \
                   --stack-name capstone \
                   --parameter-overrides KeyPairName="capstone" \
                   --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"
+
+
+
 
 workflows:
   default:
