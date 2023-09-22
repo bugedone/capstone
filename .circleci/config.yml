@@ -82,7 +82,7 @@ jobs:
             kubectl apply -f .circleci/files/capstone-deploy.yml
             kubectl apply -f .circleci/files/capstone-service.yml
             kubectl -n capstone get all
-
+            kubectl -n capstone describe service capstone
 
 workflows:
   default:
@@ -94,4 +94,3 @@ workflows:
           requires: [package-app]
       - deploy-app:
           requires: [deploy-infra]
-          
