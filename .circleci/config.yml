@@ -55,10 +55,26 @@ jobs:
             docker tag capstone:latest 727020537064.dkr.ecr.us-east-1.amazonaws.com/capstone:latest
             docker push 727020537064.dkr.ecr.us-east-1.amazonaws.com/capstone:latest
 
+  deploy-infra:
+    executor: aws
+    steps:
+      - checkout
+      - run:
+          name: Deploy infrastructure
+          command: |
+            echo "Creating AWS infrastructure for the application if not already there
+            aws cloudformation deploy \
+                  --template-file capstone-infra.yml \
+                  --tags project=capstone \
+                  --stack-name capstone \
+                  --parameter-overrides KeyPairName="capstone" \
+                  --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"
+
 workflows:
   default:
     jobs:
       - build-app
       - package-app:
           requires: [build-app]
-
+      - deploy-infra:
+          requires: [package-app]

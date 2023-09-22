@@ -1,0 +1,1 @@
+aws cloudformation deploy --template-file capstone-infra.yml --tags project=capstone --stack-name capstone --parameter-overrides KeyPairName="capstone" --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"
