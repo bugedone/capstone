@@ -64,13 +64,24 @@ jobs:
           command: |
             echo "Creating AWS infrastructure for the application if not already there"
             aws cloudformation deploy \
-                  --template-file capstone-infra.yml \
+                  --template-file .circleci/files/capstone-infra.yml \
                   --tags project=capstone \
                   --stack-name capstone \
                   --parameter-overrides KeyPairName="capstone" \
                   --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM"
 
-
+  deploy-app:
+    executor: aws
+    steps:
+      - checkout
+      - run:
+          name: Deploy application
+          command: |
+            aws eks update-kubeconfig --name capstone
+            kubectl create namespace capstone
+            kubectl apply -f .circleci/files/capstone-deploy.yml
+            kubectl apply -f .circleci/files/capstone-service.yml
+            kubectl -n capstone get all
 
 
 workflows:
@@ -81,3 +92,6 @@ workflows:
           requires: [build-app]
       - deploy-infra:
           requires: [package-app]
+      - deploy-app:
+          requires: [deploy-infra]
+          
