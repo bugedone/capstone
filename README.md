@@ -6,7 +6,7 @@
 * `README.md` - this file
 * `Dockerfile` - docker image definition
 
-### `src`` folder
+### `src` folder
 * `Program.cs` - Main applicationsource file (C# minimal API)
 * `Capstone.csproj` - Project file
 * `*.json` - supporting settings files
