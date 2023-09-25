@@ -1,7 +1,8 @@
 using System.Reflection;
 
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+var _Builder = WebApplication.CreateBuilder(args);
+
+var app = _Builder.Build();
 
 var version = Assembly.GetExecutingAssembly().GetName().Version;
 
