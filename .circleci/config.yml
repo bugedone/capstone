@@ -15,7 +15,7 @@ jobs:
 
       - checkout
       - run:
-          name: Build application
+          name: Lint code
           command: |
             cd src/Capstone
             dotnet restore
